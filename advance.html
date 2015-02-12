@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AngularJs Assignment</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body ng-app="advance" ng-init="table=true;error=true" ng-controller="advance_controller">
+		<h2 style="text-align: center"> 
+			<a href="./basic.html">BASIC</a>
+			<a href="./advance.html">ADVANCE</a>
+		</h2>
+		<p>Fetch Records:
+			<input type="number" ng-model="fetch_number" required>
+			<input type="submit" ng-click="fetch()" value="Fetch">
+		</p>
+		<p ng-hide="error" style="color:red">Enter a valid number</p>
+		<div ng-hide="table" >
+			<p> Search: <input type="text" ng-model="filter_input"></p>
+			  <ul ng-repeat="x in random_records | filter:filter_input">
+			  	<li>
+			  		<strong>UserId: </strong>{{ x.userId }}<br>
+			  		<strong>Title: </strong>{{ x.title }}<br>
+			    	<strong>Body: </strong>{{ x.body }}<br>
+			    </li>
+			  </ul>
+		</div>	
+		<script src= "angular.min.js"></script>
+		<script src= "angular-routes.js"></script>
+		<script src= "basic.js"></script>
+		<script src= "advance.js"></script>
+	</body>
+</html>
