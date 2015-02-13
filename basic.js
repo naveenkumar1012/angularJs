@@ -1,2 +1,2 @@
-This is the basic js
+//This is the basic js
 
