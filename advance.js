@@ -1,82 +1,78 @@
-var advance_cntrl = angular.module('advance', []);
-var basic_cntrl = angular.module('basic', []);
-
-advance_cntrl.controller('advance_controller', ['$scope', '$http',
+index_app.controller('advance_controller', ['$scope', '$http',
   function ($scope, $http) {
-    $http.get("http://jsonplaceholder.typicode.com/posts/").success(function(response) {$scope.records = response;});
-  	$scope.fetch=function(){
-  		var m = $scope.records.length, t, i;
-  		if($scope.fetch_number>1 &&$scope.fetch_number <= m){
-  			$scope.error=true;
-	  		$scope.random_records=$scope.records.slice();
-			while (m) {
-			    i = Math.floor(Math.random() * m--);
-			    t = $scope.random_records[m];
-			    $scope.random_records[m] = $scope.random_records[i];
-			    $scope.random_records[i] = t;
-			}
-			$scope.random_records.length=$scope.fetch_number;
-			$scope.table=false;
-			//alert($scope.records.length);
-		}
-		else{
-			$scope.table=true;
-			$scope.error=false;
-		}
-     };
-  }]);
+    $http.get("http://jsonplaceholder.typicode.com/posts/")
+    .success(function(response) {
+      $scope.records = response;});
 
-basic_cntrl.controller('basic_controller', ['$scope' ,function ($scope) {
-	$scope.people=[ ];
-    $scope.user_name = 'Your Name';
-    $scope.email = 'example@example.com';
-    var edit_index=-1;
-    $scope.addPerson = function(){
-    	if(edit_index==-1){
-		    var person = {
-		        name: $scope.user_name,
-		        email: $scope.email
-		    };
-		  	$scope.people.push(person);
-	  	}
-	  	else{
-	  		$scope.people[edit_index].name=$scope.user_name;
-	  		$scope.people[edit_index].email=$scope.email;
-	  		edit_index=-1;
-	  	}
-	 	$scope.user_name = 'Your Name';
-    	$scope.email = 'example@example.com';
-	};
-	$scope.remove=function(index){
-		$scope.people.splice(index,1);
-		if($scope.people.length==0)
-			$scope.table=true;
+    $scope.init = function() {
+      $scope.table = true;
+      $scope.error = true;
+    };
+    $scope.init();
+    $scope.fetch=function(){
+      var m = $scope.records.length, t, i;
+      if($scope.fetch_number>1 &&$scope.fetch_number <= m){
+        $scope.error=true;
+        $scope.random_records=$scope.records.slice();
+      while (m) {
+          i = Math.floor(Math.random() * m--);
+          t = $scope.random_records[m];
+          $scope.random_records[m] = $scope.random_records[i];
+          $scope.random_records[i] = t;
+      }
+      $scope.random_records.length=$scope.fetch_number;
+      $scope.table=false;
+    }
+    else{
+      $scope.table=true;
+      $scope.error=false;
+    }
      };
-     $scope.edit=function(index){
-     	$scope.user_name = $scope.people[index].name;
-    	$scope.email = $scope.people[index].email;
-    	$scope.add_row = !$scope.add_row;
-    	edit_index=index;
-     };
-}]);
-
-var index_app = angular.module('angular', [
-  'ngRoute',
-  'index_controller'
+}]).filter('groupBy', ['$parse', 'pmkr.filterStabilize', function ($parse, filterStabilize) {    
+    function groupBy(input, prop) {      
+      if (!input) { return; }      
+      var grouped = {};      
+      input.forEach(function(item) {
+        var key = $parse(prop)(item);
+        grouped[key] = grouped[key] || [];
+        grouped[key].push(item);
+      });      
+      return grouped;      
+    }    
+    return filterStabilize(groupBy);    
+ }]).factory('pmkr.filterStabilize', [
+  'pmkr.memoize',
+  function(memoize) {
+    function service(fn) {
+      function filter() {
+        var args = [].slice.call(arguments);
+        args = angular.copy(args);
+        var filtered = fn.apply(this, args) || args[0];
+        return filtered;
+      }
+      var memoized = memoize(filter);
+      return memoized;
+    }
+    return service;
+  }
+]).factory('pmkr.memoize', [
+  function() {
+    function service() {
+      return memoizeFactory.apply(this, arguments);
+    }
+    function memoizeFactory(fn) {
+      var cache = {};
+      function memoized() {
+        var args = [].slice.call(arguments);
+        var key = JSON.stringify(args);
+        if (cache.hasOwnProperty(key)) {
+          return cache[key];
+        }
+        cache[key] = fn.apply(this, arguments);
+        return cache[key];
+      }
+      return memoized;
+    }
+    return service;
+  }
 ]);
-
-index_app.config(['$routeProvider',
-  function($routeProvider) {
-    $routeProvider.
-      when('/basic', {
-        templateUrl: 'basic.html',
-        controller: 'basic_controller'
-      }).
-      when('/advance', {
-        templateUrl: 'advance.html',
-        controller: 'advance_controller'
-      }).
-      otherwise({
-        redirectTo: '/index.html'
-      });
-  }]);

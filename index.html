@@ -4,13 +4,15 @@
 		<title>AngularJs Assignment</title>
 		<link rel="stylesheet" href="style.css">
 	</head>
-	<body ng-app="angular" ng-controller="index_controller">
+	<body ng-app="angular">
 		<h2 style="text-align: center"> 
-			<a href="./basic.html">BASIC</a>
-			<a href="./advance.html">ADVANCE</a>
+			<a href="#basic">BASIC</a>
+			<a href="#advance">ADVANCE</a>
 		</h2>
+		<div ng-view></div>
 		<script src= "angular.min.js"></script>
-		<script src= "angular-routes.js"></script>
+		<script src= "angular-route.min.js"></script>
+		<script src= "index.js"></script>
 		<script src= "basic.js"></script>
 		<script src= "advance.js"></script>
 	</body>

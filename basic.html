@@ -1,52 +1,38 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>AngularJs Assignment</title>
-		<link rel="stylesheet" href="style.css">
-	</head>
-	<body ng-app="basic" ng-init="add_row=true;table=true" ng-controller="basic_controller">
-		<h2 style="text-align: center"> 
-			<a href="./basic.html">BASIC</a>
-			<a href="./advance.html">ADVANCE</a>
-		</h2>
-		<div class="add_user" style="height:160px;">
-			<input type="button"  ng-click="add_row=false" value="Add new Record" ></input>
-			<form ng-hide="add_row" novalidate >
-				<p>Name:
-				  <input type="text" name="user" ng-model="user_name" required>
-				</p>
-				<p>Email:
-				  <input type="email" name="email" ng-model="email" required>
-				</p>
-				<p>
-				  <input type="submit" ng-click="table=false;add_row=true;addPerson()" value="Submit">
-				</p>
-			</form>
-		</div>
-		<table ng-hide="table">
-			<thead>
-			  <tr>
-		           <th>No.</th>
-		           <th>Name</th>
-		           <th>Email</th>
-		           <th>Action</th>
-			  </tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="person in people">
-					<td>{{ $index+1 }}</td>
-					<td>{{ person.name }}</td>
-					<td>{{ person.email }}</td>
-					<td>
-						<button type="button" ng-click="remove($index)">Delete</button>
-						<button type="button" ng-click="edit($index)">Edit</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<script src= "angular.min.js"></script>
-		<script src= "angular-routes.js"></script>
-		<script src= "basic.js"></script>
-		<script src= "advance.js"></script>
-	</body>
-</html>
+<div ng-controller="basic_controller">
+	<div class="add_user" >
+		<input type="button"  ng-click="add_record()" value="Add new Record" ></input>
+		<form ng-hide="add_row" novalidate >
+			<p>Name:
+			  <input type="text" name="user" ng-model="user_name" placeholder="Your Name">
+			</p>
+			<p>Email:
+			  <input type="email" name="email" ng-model="email" placeholder="example@example.com" >
+			</p>
+			<p>
+			  <input type="submit" ng-click="addPerson()" value="Submit">
+			</p>
+		</form>
+		<p id="error_message" ng-hide="error"></p>
+	</div>
+	<table ng-hide="table">
+		<thead>
+		  <tr>
+	           <th>No.</th>
+	           <th>Name</th>
+	           <th>Email</th>
+	           <th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="person in people">
+				<td>{{ $index+1 }}</td>
+				<td>{{ person.name }}</td>
+				<td>{{ person.email }}</td>
+				<td>
+					<button type="button" ng-click="remove($index)">Delete</button>
+					<button type="button" ng-click="edit($index)">Edit</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -13,3 +13,9 @@ table tr:nth-child(odd) {
 table tr:nth-child(even) {
   background-color: #ffffff;
 }
+.add_user{
+	height:200px;
+}
+#error_message{
+	color: red;
+}
