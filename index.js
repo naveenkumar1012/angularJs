@@ -13,6 +13,6 @@ index_app.config(['$routeProvider',
         controller: 'advance_controller'
       }).
       otherwise({
-        redirectTo: '/#'
+        redirectTo: '/'
       });
 }]);

@@ -5,15 +5,23 @@
 	</p>
 	<p id="error_message" ng-hide="error">Enter a valid number</p>
 	<div ng-hide="table" >
+		<div id="checkboxes" ng-repeat="(key, value) in random_records | groupBy:'userId'"> 
+			<label>
+				<input type="checkbox" ng-model="checkbox_array[key]"/>
+				{{key}}
+			</label>
+		</div>
 		<p> Search: <input type="text" ng-model="filter_input"></p>
 		  <ul ng-repeat="(key, value) in random_records | groupBy:'userId'">
-		  	<strong>UserId: </strong>{{ key }}<br><br><br>
-		  	<div ng-repeat="x in value | filter: filter_input">
-			  	<li>
-			  		<strong>Title: </strong>{{ x.title }}<br>
-			    	<strong>Body: </strong>{{ x.body }}<br><br>
-			    </li>
-		    </div>
+		  	<div ng-if="checkbox_array[key] == true">
+			  	<strong>UserId: </strong>{{ key }}<br><br><br>
+			  	<div ng-repeat="x in value | filter: filter_input">
+				  	<li>
+				  		<strong>Title: </strong>{{ x.title }}<br>
+				    	<strong>Body: </strong>{{ x.body }}<br><br>
+				    </li>
+			    </div>
+			</div>
 		  </ul>
 	</div>
 </div>

@@ -5,11 +5,13 @@ function validateEmail(email) {
 index_app.controller('basic_controller', ['$scope' ,function ($scope) {
   $scope.init = function() {
       $scope.add_row = true;
-      $scope.table = true;
+      if($scope.people.length==0)
+        $scope.table = true;
+      else
+        $scope.table = false;
       $scope.error = true;
     };
   $scope.init();
-  $scope.people=[ ];
   var edit_index=-1;
   $scope.add_record = function(){
       $scope.add_row=false;
