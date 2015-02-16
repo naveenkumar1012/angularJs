@@ -1,21 +1,21 @@
-// index_app.factory('get_array', function($http) { 
-//     var obj;
-//     $http.get("http://jsonplaceholder.typicode.com/posts/").success(function(data) {
-//         obj = data;
-//     });    
-//     return obj;    
-// });
+index_app.factory('get_array', ['$http', function ($http) { 
+    return {
+        getUsers: function () {
+           return $http.get("http://jsonplaceholder.typicode.com/posts/");
+        }
+    }   
+}]);
 
-index_app.controller('advance_controller', ['$scope', '$http',
-  function ($scope, $http) {
-    $http.get("http://jsonplaceholder.typicode.com/posts/")
-    .success(function(response) {
-      $scope.records = response;
-    });
-    $scope.checkbox_array={};
+index_app.controller('advance_controller', ['$scope', '$http','get_array',
+  function ($scope, $http , get_array) {
+    
+    get_array.getUsers().success(function(data) {
+        $scope.records = data;
+    });    
     $scope.init = function() {
       $scope.table = true;
       $scope.error = true;
+      $scope.checkbox_array={};
     };
     $scope.init();
     $scope.fetch=function(){
